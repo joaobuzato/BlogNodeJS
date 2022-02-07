@@ -56,7 +56,26 @@ app.get("/:slug", (req,res) => {
     }).catch((erro) => {
         res.redirect("/");
     })
-} )
+} );
+
+app.get("/categories/:slug", (req,res) => {
+    var slug = req.params.slug;
+    Category.findOne({
+        where: {
+            slug:slug
+        },
+        include: [{model: Article}]
+    }).then( category => {
+        if(category == undefined){
+            res.redirect("/");
+        }
+        Category.findAll().then(categories => {
+            res.render("index", {articles: category.articles, categories:categories});
+        })
+    }).catch(erro => {
+        res.redirect("/");
+    })
+})
 
 app.listen(8080, () => {
     console.log("API UP! ");
