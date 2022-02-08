@@ -1,6 +1,8 @@
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
+const session = require("express-session")
+
 const connection = require('./database/database');
 const categoriesController = require("./categories/CategoriesController")
 const articlesController = require("./articles/ArticlesController")
@@ -11,6 +13,14 @@ const Category = require("./categories/Category")
 const User = require("./users/User")
 
 app.set('view engine', 'ejs');
+
+app.use(session({
+    secret: "Buz@t0S3cr3t",
+    cookie: {
+        maxAge: 300000
+    }
+}))
+
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
