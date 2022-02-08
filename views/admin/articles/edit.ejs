@@ -8,16 +8,20 @@
             <h2>Editar Artigo</h2>
         </div>
         <div class="card-body">
-            <form method="POST" action="/articles/update">
+            <form method="POST" action="/admin/articles/update">
                 <input type="hidden" name="id" value="<%= article.id %>">
                 <input class="form-control" type="text" name="title" placeholder="Título do Artigo" value="<%= article.title %>">
                 <br>
                 <textarea class="form-control" placeholder="Escreva o artigo" name="body" id="article" ><%- article.body %></textarea>
                 <br>
                 <label>Categoria</label>
-                <select name="category" class="form-control" value="<%= article.category %>">
+                <select name="category" class="form-control" >
                     <% categories.forEach((category) => {  %>
-                        <option value="<%= category.id %>"><%= category.title %></option>
+                        <% if(category.id == article.categoryId) { %>
+                            <option value="<%= category.id %>" selected><%= category.title %></option>
+                        <% } else { %>
+                            <option value="<%= category.id %>"><%= category.title %></option>
+                        <% } %> 
                     <% }) %>
                 </select>
                 <br>
