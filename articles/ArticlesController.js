@@ -26,11 +26,13 @@ router.post("/admin/articles/save", adminAuth, (req,res) => {
     var title = req.body.title;
     var body = req.body.body;
     var category = req.body.category;
+    var creator = req.session.user.email;
 
     Article.create({
         title:title,
         slug: slugify(title),
         body:body,
+        creator:creator,
         categoryId:category
     }).then(() => {
         res.redirect("/admin/articles");
@@ -65,7 +67,7 @@ router.get("/admin/articles/edit/:id", adminAuth, (req,res) => {
                 res.redirect("/admin/articles")
             }
             res.render("./admin/articles/edit", {
-                article:article, categories:categories
+                article:article, categories:categories,
             });
 
         }).catch((erro) => {

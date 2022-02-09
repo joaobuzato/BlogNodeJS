@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
 const User = require("./User");
+const adminAuth = require("../middlewares/adminAuth");
 
 router.get("/admin/users", (req,res) => {
     User.findAll().then((users) => {
@@ -56,7 +57,7 @@ router.post("/authenticate", (req,res) =>{
                     id: user.id,
                     email: user.email
                 }
-                res.redirect("/admin/articles");
+                res.redirect("/admin");
             }
         }
         
@@ -67,6 +68,11 @@ router.post("/authenticate", (req,res) =>{
 router.get("/logout", (req,res) => {
     req.session.user = undefined;
     res.redirect("/");
+})
+
+router.get("/admin", adminAuth, (req,res)  => {
+    email = req.session.user.email;
+    res.render("./admin", { email:email });
 })
 
 
