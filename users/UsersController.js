@@ -28,7 +28,13 @@ router.post("/users/create", (req,res) => {
                 email:email,
                 password:hash
             }).then(() => {
-                res.redirect("/")
+                User.findOne({where:{email:email}}).then((user) =>{
+                    req.session.user = {
+                        id: user.id,
+                        email: user.email
+                    }
+                    res.redirect("/admin");
+                })
             }).catch((erro) => {
                 res.send(erro)
             })
